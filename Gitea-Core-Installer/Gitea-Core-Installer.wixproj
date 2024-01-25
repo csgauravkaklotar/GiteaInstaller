@@ -1,0 +1,57 @@
+﻿<Project Sdk="WixToolset.Sdk/4.0.3">
+	<ItemGroup>
+		<PackageReference Include="WixToolset.Heat" Version="4.0.3" />
+		<PackageReference Include="WixToolset.UI.wixext" Version="4.0.3" />
+		<PackageReference Include="WixToolset.Util.wixext" Version="4.0.3" />
+	</ItemGroup>
+	<ItemGroup>
+		<HarvestDirectory Include="Assets/GiteaBuild">
+			<ComponentGroupName>GiteaComponents</ComponentGroupName>
+			<DirectoryRefId>INSTALLFOLDER</DirectoryRefId>
+			<SuppressRootDirectory>true</SuppressRootDirectory>
+			<SuppressRegistry>true</SuppressRegistry>
+		</HarvestDirectory>
+		<BindPath Include="Assets/GiteaBuild" />
+	</ItemGroup>
+
+	<PropertyGroup>
+		<DoSigning>false</DoSigning>
+		<SignOutput>true</SignOutput>
+		<SkipPostBuildEvents>false</SkipPostBuildEvents>
+		<BuildVersion>1.0.0.0</BuildVersion>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+		<DefineConstants>Version=$(BuildVersion);</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+		<DefineConstants>Version=$(BuildVersion);</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
+		<DefineConstants>Version=$(BuildVersion);</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+		<DefineConstants>Version=$(BuildVersion);</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+		<DefineConstants>Version=$(BuildVersion);</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
+		<DefineConstants>Version=$(BuildVersion);</DefineConstants>
+	</PropertyGroup>
+
+	<!--Sign Msi file.-->
+	<Target Name="SignMsi">
+		<Message Importance="high" Text="SignMsi: @(SignMsi)" />
+		<Exec Command="ping 127.0.0.1 -n 5 > nul" IgnoreExitCode="true" />
+		<Exec Condition="'$(Configuration)' == 'Release'" Command="if $(DoSigning) == true azuresigntool sign -kvu https://peregrinebuildkeyvault.vault.azure.net/ --azure-key-vault-tenant-id $(AzureTenantId) -kvc PeregrineBuildCodeSigning -kvi $(CodeSigningId) -kvs $(CodeSigningClient) -tr http://ts.ssl.com/ -td sha256 &quot;%(SignMsi.FullPath)&quot;" />
+	</Target>
+
+	<!-- Copy Msi setup to bundle project asset folder -->
+	<Target Condition="'$(SkipPostBuildEvents)' == 'false'" Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="ping 127.0.0.1 -n 5 > nul" IgnoreExitCode="true" />
+		<Exec Command="del &quot;$(SolutionDir)Gitea-Bundle-Installer\BundleInstaller\Assets\Gitea-Core-Installer.msi&quot;" IgnoreExitCode="true" />
+		<Exec Command="copy &quot;$(SolutionDir)Gitea-Core-Installer\bin\$(Platform)\$(Configuration)\en-US\Gitea-Core-Installer.msi&quot; &quot;$(SolutionDir)Gitea-Bundle-Installer\BundleInstaller\Assets\Gitea-Core-Installer.msi&quot;" />
+	</Target>
+</Project>
+	

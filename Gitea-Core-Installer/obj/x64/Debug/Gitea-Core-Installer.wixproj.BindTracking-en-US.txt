@@ -1,0 +1,4 @@
+BuiltPdbOutput	C:\Users\LENOVO\Desktop\GiteaInstaller\Gitea-Core-Installer\obj\x64\Debug\en-US\Gitea-Core-Installer.wixpdb
+BuiltTargetOutput	C:\Users\LENOVO\Desktop\GiteaInstaller\Gitea-Core-Installer\obj\x64\Debug\en-US\Gitea-Core-Installer.msi
+Input	C:\Users\LENOVO\Desktop\GiteaInstaller\Gitea-Core-Installer\Assets\GiteaBuild\gitea.exe
+Intermediate	C:\Users\LENOVO\Desktop\GiteaInstaller\Gitea-Core-Installer\obj\x64\Debug\en-US\#cab1.cab

@@ -1,0 +1,14 @@
+﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+    <Fragment>
+        <DirectoryRef Id="INSTALLFOLDER">
+            <Component Id="cmpFSXSiLwmxJVyZBN1xPStjW4a5UM" Guid="*">
+                <File Id="fil.7HXthrmXskaaJfbAVxIlsyVs0o" KeyPath="yes" Source="SourceDir\gitea.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <ComponentGroup Id="GiteaComponents">
+            <ComponentRef Id="cmpFSXSiLwmxJVyZBN1xPStjW4a5UM" />
+        </ComponentGroup>
+    </Fragment>
+</Wix>

@@ -1,0 +1,2 @@
+^C:\Users\LENOVO\Desktop\GiteaInstaller\Gitea-Core-Installer\Gitea-Core-Installer.wixproj
+obj\x64\Debug\en-US\Gitea-Core-Installer.msi

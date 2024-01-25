@@ -1,0 +1,14 @@
+﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
+	 xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui"
+	 xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util">
+  <Package Name="Gitea v1.21.3" Manufacturer="TODO Manufacturer" Version="1.0.0.0" UpgradeCode="2ec576e2-7fb9-49de-9436-80e0578da333">
+    <MajorUpgrade DowngradeErrorMessage="!(loc.DowngradeError)" />
+
+	<!-- EmbedCab: -->
+	<MediaTemplate EmbedCab="yes" />
+
+    <Feature Id="Main">
+      <ComponentGroupRef Id="GiteaComponents" />
+    </Feature>
+  </Package>
+</Wix>

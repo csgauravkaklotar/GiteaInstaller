@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34322.80
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{B7DD6F7E-DEF8-4E67-B5B7-07EF123DB6F0}") = "Gitea-Core-Installer", "Gitea-Core-Installer\Gitea-Core-Installer.wixproj", "{35BEDE2D-F475-492B-BDCB-75C87E7F8A07}"
+EndProject
+Project("{B7DD6F7E-DEF8-4E67-B5B7-07EF123DB6F0}") = "Gitea-Bundle-Installer", "Gitea-Bundle-Installer\Gitea-Bundle-Installer.wixproj", "{C132CAC2-5A29-497C-B463-570E65221BDD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|ARM64 = Debug|ARM64
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|ARM64 = Release|ARM64
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{35BEDE2D-F475-492B-BDCB-75C87E7F8A07}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{35BEDE2D-F475-492B-BDCB-75C87E7F8A07}.Debug|ARM64.Build.0 = Debug|ARM64
+		{35BEDE2D-F475-492B-BDCB-75C87E7F8A07}.Debug|x64.ActiveCfg = Debug|x64
+		{35BEDE2D-F475-492B-BDCB-75C87E7F8A07}.Debug|x64.Build.0 = Debug|x64
+		{35BEDE2D-F475-492B-BDCB-75C87E7F8A07}.Debug|x86.ActiveCfg = Debug|x86
+		{35BEDE2D-F475-492B-BDCB-75C87E7F8A07}.Debug|x86.Build.0 = Debug|x86
+		{35BEDE2D-F475-492B-BDCB-75C87E7F8A07}.Release|ARM64.ActiveCfg = Release|ARM64
+		{35BEDE2D-F475-492B-BDCB-75C87E7F8A07}.Release|ARM64.Build.0 = Release|ARM64
+		{35BEDE2D-F475-492B-BDCB-75C87E7F8A07}.Release|x64.ActiveCfg = Release|x64
+		{35BEDE2D-F475-492B-BDCB-75C87E7F8A07}.Release|x64.Build.0 = Release|x64
+		{35BEDE2D-F475-492B-BDCB-75C87E7F8A07}.Release|x86.ActiveCfg = Release|x86
+		{35BEDE2D-F475-492B-BDCB-75C87E7F8A07}.Release|x86.Build.0 = Release|x86
+		{C132CAC2-5A29-497C-B463-570E65221BDD}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{C132CAC2-5A29-497C-B463-570E65221BDD}.Debug|ARM64.Build.0 = Debug|ARM64
+		{C132CAC2-5A29-497C-B463-570E65221BDD}.Debug|x64.ActiveCfg = Debug|x64
+		{C132CAC2-5A29-497C-B463-570E65221BDD}.Debug|x64.Build.0 = Debug|x64
+		{C132CAC2-5A29-497C-B463-570E65221BDD}.Debug|x86.ActiveCfg = Debug|x86
+		{C132CAC2-5A29-497C-B463-570E65221BDD}.Debug|x86.Build.0 = Debug|x86
+		{C132CAC2-5A29-497C-B463-570E65221BDD}.Release|ARM64.ActiveCfg = Release|ARM64
+		{C132CAC2-5A29-497C-B463-570E65221BDD}.Release|ARM64.Build.0 = Release|ARM64
+		{C132CAC2-5A29-497C-B463-570E65221BDD}.Release|x64.ActiveCfg = Release|x64
+		{C132CAC2-5A29-497C-B463-570E65221BDD}.Release|x64.Build.0 = Release|x64
+		{C132CAC2-5A29-497C-B463-570E65221BDD}.Release|x86.ActiveCfg = Release|x86
+		{C132CAC2-5A29-497C-B463-570E65221BDD}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D5260A39-BB6E-46AB-83AF-998F487266BA}
+	EndGlobalSection
+EndGlobal
