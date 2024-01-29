@@ -7,6 +7,18 @@
         "build": {
           "build/WixToolset.Bal.wixext.targets": {}
         }
+      },
+      "WixToolset.Netfx.wixext/4.0.3": {
+        "type": "package",
+        "build": {
+          "build/WixToolset.Netfx.wixext.targets": {}
+        }
+      },
+      "WixToolset.Util.wixext/4.0.3": {
+        "type": "package",
+        "build": {
+          "build/WixToolset.Util.wixext.targets": {}
+        }
       }
     },
     "native,Version=v0.0/win": {
@@ -14,6 +26,18 @@
         "type": "package",
         "build": {
           "build/WixToolset.Bal.wixext.targets": {}
+        }
+      },
+      "WixToolset.Netfx.wixext/4.0.3": {
+        "type": "package",
+        "build": {
+          "build/WixToolset.Netfx.wixext.targets": {}
+        }
+      },
+      "WixToolset.Util.wixext/4.0.3": {
+        "type": "package",
+        "build": {
+          "build/WixToolset.Util.wixext.targets": {}
         }
       }
     },
@@ -23,6 +47,18 @@
         "build": {
           "build/WixToolset.Bal.wixext.targets": {}
         }
+      },
+      "WixToolset.Netfx.wixext/4.0.3": {
+        "type": "package",
+        "build": {
+          "build/WixToolset.Netfx.wixext.targets": {}
+        }
+      },
+      "WixToolset.Util.wixext/4.0.3": {
+        "type": "package",
+        "build": {
+          "build/WixToolset.Util.wixext.targets": {}
+        }
       }
     },
     "native,Version=v0.0/win-x64": {
@@ -31,6 +67,18 @@
         "build": {
           "build/WixToolset.Bal.wixext.targets": {}
         }
+      },
+      "WixToolset.Netfx.wixext/4.0.3": {
+        "type": "package",
+        "build": {
+          "build/WixToolset.Netfx.wixext.targets": {}
+        }
+      },
+      "WixToolset.Util.wixext/4.0.3": {
+        "type": "package",
+        "build": {
+          "build/WixToolset.Util.wixext.targets": {}
+        }
       }
     },
     "native,Version=v0.0/win-x86": {
@@ -38,6 +86,18 @@
         "type": "package",
         "build": {
           "build/WixToolset.Bal.wixext.targets": {}
+        }
+      },
+      "WixToolset.Netfx.wixext/4.0.3": {
+        "type": "package",
+        "build": {
+          "build/WixToolset.Netfx.wixext.targets": {}
+        }
+      },
+      "WixToolset.Util.wixext/4.0.3": {
+        "type": "package",
+        "build": {
+          "build/WixToolset.Util.wixext.targets": {}
         }
       }
     }
@@ -56,11 +116,41 @@
         "wixtoolset.bal.wixext.4.0.3.nupkg.sha512",
         "wixtoolset.bal.wixext.nuspec"
       ]
+    },
+    "WixToolset.Netfx.wixext/4.0.3": {
+      "sha512": "I/VML5YV+EhDL4RjMn2Rn3mhnTQnoGzdF980izBxiD1IiBItj52L6D91EAZYlZ9taVyu96KsQsh+nnSc6L3avg==",
+      "type": "package",
+      "path": "wixtoolset.netfx.wixext/4.0.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "build/WixToolset.Netfx.wixext.targets",
+        "wix.png",
+        "wixext4/WixToolset.Netfx.wixext.dll",
+        "wixtoolset.netfx.wixext.4.0.3.nupkg.sha512",
+        "wixtoolset.netfx.wixext.nuspec"
+      ]
+    },
+    "WixToolset.Util.wixext/4.0.3": {
+      "sha512": "gWDOZNC6Y+8RPNjjAviFTyZwEYMNa+pg5gqRnZinUYwCi0mLlaD+lpWm37L6oU9hEcvkBXkJRVJSIqjsxiSOHQ==",
+      "type": "package",
+      "path": "wixtoolset.util.wixext/4.0.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "build/WixToolset.Util.wixext.targets",
+        "wix.png",
+        "wixext4/WixToolset.Util.wixext.dll",
+        "wixtoolset.util.wixext.4.0.3.nupkg.sha512",
+        "wixtoolset.util.wixext.nuspec"
+      ]
     }
   },
   "projectFileDependencyGroups": {
     "native,Version=v0.0": [
-      "WixToolset.Bal.wixext >= 4.0.3"
+      "WixToolset.Bal.wixext >= 4.0.3",
+      "WixToolset.Netfx.wixext >= 4.0.3",
+      "WixToolset.Util.wixext >= 4.0.3"
     ]
   },
   "packageFolders": {
@@ -98,6 +188,14 @@
         "targetAlias": "native",
         "dependencies": {
           "WixToolset.Bal.wixext": {
+            "target": "Package",
+            "version": "[4.0.3, )"
+          },
+          "WixToolset.Netfx.wixext": {
+            "target": "Package",
+            "version": "[4.0.3, )"
+          },
+          "WixToolset.Util.wixext": {
             "target": "Package",
             "version": "[4.0.3, )"
           }

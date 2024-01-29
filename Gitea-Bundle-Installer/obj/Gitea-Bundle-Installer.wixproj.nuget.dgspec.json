@@ -38,6 +38,14 @@
             "WixToolset.Bal.wixext": {
               "target": "Package",
               "version": "[4.0.3, )"
+            },
+            "WixToolset.Netfx.wixext": {
+              "target": "Package",
+              "version": "[4.0.3, )"
+            },
+            "WixToolset.Util.wixext": {
+              "target": "Package",
+              "version": "[4.0.3, )"
             }
           }
         }

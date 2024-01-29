@@ -1,10 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "Gkw3vlyyIS7FbMKac0Q/6GAEnvLyOt2eJIHGKlhI6vWydprSIWqFdEXtiiv5Dq+CeVdU6aGHnf5Dp2XrdMl8IA==",
+  "dgSpecHash": "/kA1i1BmqGVyyWyTm0xejFdplyp43cxLc7d+0HzGVj9FgigGrF5Z3gywzVR7YTFmEqLxx8FSKXoSquijbLpCJg==",
   "success": true,
   "projectFilePath": "C:\\Users\\LENOVO\\Desktop\\GiteaInstaller\\Gitea-Bundle-Installer\\Gitea-Bundle-Installer.wixproj",
   "expectedPackageFiles": [
-    "C:\\Users\\LENOVO\\.nuget\\packages\\wixtoolset.bal.wixext\\4.0.3\\wixtoolset.bal.wixext.4.0.3.nupkg.sha512"
+    "C:\\Users\\LENOVO\\.nuget\\packages\\wixtoolset.bal.wixext\\4.0.3\\wixtoolset.bal.wixext.4.0.3.nupkg.sha512",
+    "C:\\Users\\LENOVO\\.nuget\\packages\\wixtoolset.netfx.wixext\\4.0.3\\wixtoolset.netfx.wixext.4.0.3.nupkg.sha512",
+    "C:\\Users\\LENOVO\\.nuget\\packages\\wixtoolset.util.wixext\\4.0.3\\wixtoolset.util.wixext.4.0.3.nupkg.sha512"
   ],
   "logs": []
 }

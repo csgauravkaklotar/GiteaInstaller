@@ -1,9 +1,57 @@
 ﻿<Project Sdk="WixToolset.Sdk/4.0.3">
   <PropertyGroup>
     <OutputType>Bundle</OutputType>
+	<OutputName>GiteaInstaller</OutputName>
   </PropertyGroup>
+	
+	<ItemGroup>
+		<PackageReference Include="WixToolset.Bal.wixext" Version="4.0.3" />
+		<PackageReference Include="WixToolset.Netfx.wixext" Version="4.0.3" />
+		<PackageReference Include="WixToolset.Util.wixext" Version="4.0.3" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Gitea-Core-Installer\Gitea-Core-Installer.wixproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="WixToolset.Bal.wixext" Version="4.0.3" />
-  </ItemGroup>
+	<PropertyGroup>
+		<SignOutput>true</SignOutput>
+		<DoSigning>false</DoSigning>
+		<SkipPostBuildEvents>false</SkipPostBuildEvents>
+		<BuildVersion>1.0.0.0</BuildVersion>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+		<DefineConstants>Version=$(BuildVersion);</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+		<DefineConstants>Version=$(BuildVersion);</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
+		<DefineConstants>Version=$(BuildVersion);</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+		<DefineConstants>Version=$(BuildVersion);</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+		<DefineConstants>Version=$(BuildVersion);</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
+		<DefineConstants>Version=$(BuildVersion);</DefineConstants>
+	</PropertyGroup>
+
+	<Target Name="SignBundleEngine">
+		<Message Importance="high" Text="SignBundleEngine: @(SignBundleEngine)" />
+		<Exec Command="ping 127.0.0.1 -n 5 > nul" IgnoreExitCode="true"/>
+		<Exec Condition="'$(Configuration)' == 'Debug'" Command="echo Sign Bundle Path &quot;%(SignBundleEngine.FullPath)&quot;" />
+		<Exec Condition="'$(Configuration)' == 'Release'" Command="if $(DoSigning) == true azuresigntool sign -kvu https://peregrinebuildkeyvault.vault.azure.net/ --azure-key-vault-tenant-id $(AzureTenantId) -kvc PeregrineBuildCodeSigning -kvi $(CodeSigningId) -kvs $(CodeSigningClient) -tr http://ts.ssl.com/ -td sha256 &quot;%(SignBundleEngine.FullPath)&quot;" />
+	</Target>
+	<Target Name="SignBundle">
+		<Message Importance="high" Text="SignBundle: @(SignBundle)" />
+		<Exec Command="ping 127.0.0.1 -n 5 > nul" IgnoreExitCode="true"/>
+		<Exec Condition="'$(Configuration)' == 'Debug'" Command="echo Sign Bundle Path &quot;%(SignBundle.FullPath)&quot;" />
+		<Exec Condition="'$(Configuration)' == 'Release'" Command="if $(DoSigning) == true azuresigntool sign -kvu https://peregrinebuildkeyvault.vault.azure.net/ --azure-key-vault-tenant-id $(AzureTenantId) -kvc PeregrineBuildCodeSigning -kvi $(CodeSigningId) -kvs $(CodeSigningClient) -tr http://ts.ssl.com/ -td sha256 &quot;%(SignBundle.FullPath)&quot;" />
+	</Target>
+
+	<!-- PostBuild event -->
+	<!--<Target Condition="'$(SkipPostBuildEvents)' == 'false'" Name="PostBuild" AfterTargets="PostBuildEvent">
+	</Target>-->
 </Project>

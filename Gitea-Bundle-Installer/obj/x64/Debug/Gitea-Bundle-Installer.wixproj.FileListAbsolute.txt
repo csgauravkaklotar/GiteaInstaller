@@ -1,0 +1,8 @@
+C:\Users\LENOVO\Desktop\GiteaInstaller\Gitea-Bundle-Installer\bin\x64\Debug\GiteaInstaller.exe
+C:\Users\LENOVO\Desktop\GiteaInstaller\Gitea-Bundle-Installer\bin\x64\Debug\GiteaInstaller.wixpdb
+C:\Users\LENOVO\Desktop\GiteaInstaller\Gitea-Bundle-Installer\obj\x64\Debug\Gitea-Bundle-Installer.wixproj.CoreCompileInputs.cache
+C:\Users\LENOVO\Desktop\GiteaInstaller\Gitea-Bundle-Installer\obj\x64\Debug\GiteaInstaller.exe
+C:\Users\LENOVO\Desktop\GiteaInstaller\Gitea-Bundle-Installer\obj\x64\Debug\GiteaInstaller.wixpdb
+C:\Users\LENOVO\Desktop\GiteaInstaller\Gitea-Bundle-Installer\obj\x64\Debug\Gitea-Bundle-Installer.wixproj.BindTracking.txt
+C:\Users\LENOVO\Desktop\GiteaInstaller\Gitea-Bundle-Installer\obj\x64\Debug\GiteaInstaller-engine.exe
+C:\Users\LENOVO\Desktop\GiteaInstaller\Gitea-Bundle-Installer\obj\x64\Debug\Gitea-Bundle-Installer.wixproj.Signed.txt
