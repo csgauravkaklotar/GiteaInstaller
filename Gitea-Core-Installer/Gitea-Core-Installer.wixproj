@@ -18,7 +18,7 @@
 		<DoSigning>false</DoSigning>
 		<SignOutput>true</SignOutput>
 		<SkipPostBuildEvents>false</SkipPostBuildEvents>
-		<BuildVersion>1.0.0.0</BuildVersion>
+		<BuildVersion>1.21.3.0</BuildVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">

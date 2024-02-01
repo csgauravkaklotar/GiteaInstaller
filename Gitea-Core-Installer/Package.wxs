@@ -1,14 +1,45 @@
 ﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
 	 xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui"
 	 xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util">
-  <Package Name="Gitea v1.21.3" Manufacturer="Gitea Installer, LLC" Version="$(Version)" UpgradeCode="2ec576e2-7fb9-49de-9436-80e0578da333">
+  <Package Name="Gitea v1.21.3" Manufacturer="Gitea Installer, LLC" Version="$(Version)" UpgradeCode="308e5bd1-8075-453c-a8c3-e5da4bf24d4d">
     <MajorUpgrade DowngradeErrorMessage="!(loc.DowngradeError)" />
 
 	<!-- EmbedCab: -->
 	<MediaTemplate EmbedCab="yes" />
 
+	  <Property Id="GITEAHOST"
+				  Value="*"/>
+	  <Property Id="GITEAPORT"
+				Value="49240"/>
+	  <Property Id="PMSHOST"
+				Value="localhost"/>
+	  <Property Id="INSTALLSVCPORT"
+				Value="48001"/>
+	  <Property Id="UD_DISPLAY_UI"
+				Value="1"/>
+	  <Property Id="IS_EXISTS"
+				Value="0" />
+	  <Property Id="UPGRADE_SILENT"
+				Value="0" />
+
+
+	  <!-- Custom Action Caling Sequence -->
+	  <InstallUISequence>
+		  <Show Dialog="CustomWelcomeDlg"
+				Before="ProgressDlg"
+				Condition="NOT Installed OR PATCH" />
+		  <Show Dialog="CustomProgressDlg"
+				After="ProgressDlg"
+				Overridable="no"/>
+		  <Show Dialog="GiteaPortDlg"
+				After="ResumeDlg"
+				Condition="Installed AND (RESUME OR Preselected)" />
+	  </InstallUISequence>
+	  
+	  
     <Feature Id="Main">
       <ComponentGroupRef Id="GiteaComponents" />
     </Feature>
+
   </Package>
 </Wix>

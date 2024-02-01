@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
+	 xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
+
+	<!-- UI -->
+
+	<?foreach WIXUIARCH in X86;X64;A64 ?>
+	<Fragment>
+		<UI Id="GiteaUI_$(WIXUIARCH)">
+			<Publish Dialog="LicenseAgreementDlg"
+					 Control="Print"
+					 Event="DoAction"
+					 Value="WixUIPrintEula_$(WIXUIARCH)" />
+			<Publish Dialog="BrowseDlg"
+					 Control="OK"
+					 Event="DoAction"
+					 Value="WixUIValidatePath_$(WIXUIARCH)"
+					 Order="3"
+					 Condition="NOT WIXUI_DONTVALIDATEPATH" />
+		</UI>
+
+		<UIRef Id="GiteaUI" />
+	</Fragment>
+	<?endforeach?>
+
+	<Fragment>
+		<UI Id="GiteaUI">
+			<TextStyle Id="WixUI_Font_Normal" FaceName="Tahoma" Size="8" />
+			<TextStyle Id="WixUI_Font_Bigger" FaceName="Tahoma" Size="12" />
+			<TextStyle Id="WixUI_Font_Title" FaceName="Tahoma" Size="8" Bold="yes" />
+
+			<Property Id="DefaultUIFont" Value="WixUI_Font_Normal" />
+			<Property Id="WixUI_Mode" Value="Mondo" />
+
+			<DialogRef Id="ErrorDlg" />
+			<DialogRef Id="FatalError" />
+			<DialogRef Id="FilesInUse" />
+			<DialogRef Id="MsiRMFilesInUse" />
+			<DialogRef Id="PrepareDlg" />
+			<DialogRef Id="ResumeDlg" />
+			<DialogRef Id="UserExit" />
+
+			<Publish Dialog="ExitDialog" Control="Finish" Event="EndDialog" Value="Return" Order="999" />
+
+			<Publish Dialog="CustomWelcomeDlg" Control="Next" Event="NewDialog" Value="GiteaPortDlg" Condition="NOT Installed AND NOT PATCH" />
+			<Publish Dialog="CustomWelcomeDlg" Control="Next" Event="NewDialog" Value="GiteaPortDlg" Condition="Installed AND PATCH" />
+			<Publish Dialog="CustomWelcomeDlg" Control="Next" Event="NewDialog" Value="GiteaPortDlg" Condition="Installed AND (RESUME OR Preselected)" />
+
+			<Publish Dialog="MaintenanceWelcomeDlg" Control="Next" Event="NewDialog" Value="CustomMaintenanceTypeDlg" />
+			
+			<Publish Dialog="MaintenanceTypeDlg" Control="Back" Event="NewDialog" Value="MaintenanceWelcomeDlg" />
+			
+			<!--CustomWelcomeDlg-->
+			<Dialog Id="CustomWelcomeDlg" Height="270" Title="!(loc.DialogTitle)" Width="370">
+
+				<Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="!(loc.WixUINext)">
+					<Publish Property="WixUI_InstallMode" Value="Update" Condition="Installed AND PATCH" />
+				</Control>
+				<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="!(loc.WixUICancel)">
+					<Publish Event="SpawnDialog" Value="CancelDlg" />
+				</Control>
+				
+				<Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+				<Control Id="Description" Type="Text" X="20" Y="205" Width="300" Height="60" Transparent="yes" NoPrefix="yes" Text="!(loc.WelcomeDlgDescription)" ShowCondition="NOT Installed OR NOT PATCH" HideCondition="Installed AND PATCH" />
+				<Control Id="PatchDescription" Type="Text" X="135" Y="80" Width="220" Height="60" Transparent="yes" NoPrefix="yes" Text="!(loc.WelcomeDlgDescription)" ShowCondition="Installed AND PATCH" HideCondition="NOT Installed OR NOT PATCH" />
+				<Control Id="Title" Type="Text" X="40" Y="50" Width="300" Height="60" Transparent="yes" NoPrefix="yes" Text="!(loc.WelcomeDlgTitle)" />
+			</Dialog>
+			
+			<!--ServiceAccountDlg-->
+			<!--<Dialog Id="ServiceAccountDlg" Height="270" Title="!(loc.DialogTitle)" Width="370">
+				<Control Id="Title" Type="Text" X="15" Y="60" Width="200" Height="15" NoPrefix="yes" Transparent="yes" Text="!(loc.ServiceAccountTitle)" />
+			</Dialog>--> 
+			
+			<!--GiteaPortDlg-->
+			<Dialog Id="GiteaPortDlg" Height="270" Title="!(loc.DialogTitle)" Width="370">
+				<Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" Text="WixUI_Bmp_Banner" />
+				<Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="1" />
+				<Control Id="Title" Type="Text" X="15" Y="60" Width="200" Height="15" NoPrefix="yes" Transparent="yes" Text="!(loc.GiteaPortDlgTitle)" />
+				<Control Id="Text" Type="Text" X="25" Y="90" Width="330" Height="20" Text="!(loc.GiteaPortDlgText)" Transparent="yes" />
+				<Control Id="GiteaPort" Type="Edit" X="25" Y="110" Width="100" Height="20" Property="GITEAPORT" />
+				<Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+				<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="!(loc.BackButtonText)">
+					<Publish Event="NewDialog" Value="CustomWelcomeDlg" />
+					<Publish Event="NewDialog" Value="CustomMaintenanceTypeDlg" Condition="WixUI_InstallMode = &quot;Repair&quot; OR WixUI_InstallMode = &quot;Change&quot; OR WixUI_InstallMode = &quot;Update&quot;" />
+					<Publish Event="NewDialog" Value="ResumeDlg" Condition="Installed AND (RESUME OR Preselected)" />
+				</Control>
+				<Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Text="!(loc.NextButtonText)">
+					<Publish Event="NewDialog" Value="CustomVerifyReadyDlg" />
+					<Publish Event="EndDialog" Value="Return" Condition="Installed AND (RESUME OR Preselected)"/>
+				</Control>
+				
+				<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Text="!(loc.CancelButtonText)" Cancel="yes">
+					<Publish Event="SpawnDialog" Value="CancelDlg" />
+				</Control>
+			</Dialog>
+			
+			<!-- Deprecated PMSConfigDlg -->
+			<Dialog Id="PMSConfigDlg" Height="270" Title="!(loc.DialogTitle)" Width="370">
+				<Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" Text="WixUI_Bmp_Banner" />
+				<Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="1" />
+				<!--<Control Id="Title" Type="Text" X="15" Y="6" Width="200" Height="15" NoPrefix="yes" Transparent="yes" Text="!(loc.PMSConfigDlgTitle)" />
+				<Control Id="Description" Type="Text" X="25" Y="23" Width="340" Height="15" NoPrefix="yes" Transparent="yes" Text="!(loc.PMSConfigDlgDescription)" />-->
+				<Control Id="Text" Type="Text" X="20" Y="60" Width="330" Height="20" Text="!(loc.PMSHostDlgText)" />
+				<Control Id="PMSHost" Type="Edit" X="20" Y="90" Width="100" Height="17" Property="PMSHOST" />
+				<Control Id="Text2" Type="Text" X="20" Y="130" Width="330" Height="20" Text="!(loc.PMSInstallSVCPortDlgText)" />
+				<Control Id="InstallsvcPort" Type="Edit" X="20" Y="160" Width="100" Height="17" Property="INSTALLSVCPORT" />
+				<Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+				<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="!(loc.BackButtonText)">
+					<Publish Event="NewDialog" Value="GiteaPortDlg" />
+				</Control>
+				<Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Text="!(loc.NextButtonText)">
+					<Publish Event="NewDialog" Value="CustomVerifyReadyDlg" />
+					<Publish Event="EndDialog" Value="Return" Condition="Installed AND (RESUME OR Preselected)"/>
+				</Control>
+				<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Text="!(loc.CancelButtonText)" Cancel="yes">
+					<Publish Event="SpawnDialog" Value="CancelDlg" />
+				</Control>
+			</Dialog>
+
+			<!-- CustomVerifyReadyDialog -->
+			<Dialog Id="CustomVerifyReadyDlg" Width="370" Height="270" Title="!(loc.VerifyReadyDlg_Title)" TrackDiskSpace="yes">
+				<Control Id="Install" Type="PushButton" ElevationShield="yes" X="212" Y="243" Width="80" Height="17" Default="yes" Hidden="yes" Disabled="yes" Text="!(loc.VerifyReadyDlgInstall)" ShowCondition="NOT Installed AND ALLUSERS" EnableCondition="NOT Installed" DefaultCondition="NOT Installed">
+					<Publish Event="EndDialog" Value="Return" Condition="OutOfDiskSpace &lt;&gt; 1" />
+					<Publish Event="SpawnDialog" Value="OutOfRbDiskDlg" Condition="OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND (PROMPTROLLBACKCOST=&quot;P&quot; OR NOT PROMPTROLLBACKCOST)" />
+					<Publish Event="EndDialog" Value="Return" Condition="OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND PROMPTROLLBACKCOST=&quot;D&quot;" />
+					<Publish Event="EnableRollback" Value="False" Condition="OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND PROMPTROLLBACKCOST=&quot;D&quot;" />
+					<Publish Event="SpawnDialog" Value="OutOfDiskDlg" Condition="(OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 1) OR (OutOfDiskSpace = 1 AND PROMPTROLLBACKCOST=&quot;F&quot;)" />
+				</Control>
+				<Control Id="InstallNoShield" Type="PushButton" ElevationShield="no" X="212" Y="243" Width="80" Height="17" Default="yes" Hidden="yes" Disabled="yes" Text="!(loc.VerifyReadyDlgInstall)" ShowCondition="NOT Installed AND NOT ALLUSERS" EnableCondition="NOT Installed" DefaultCondition="NOT Installed">
+					<Publish Event="EndDialog" Value="Return" Condition="OutOfDiskSpace &lt;&gt; 1" />
+					<Publish Event="SpawnDialog" Value="OutOfRbDiskDlg" Condition="OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND (PROMPTROLLBACKCOST=&quot;P&quot; OR NOT PROMPTROLLBACKCOST)" />
+					<Publish Event="EndDialog" Value="Return" Condition="OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND PROMPTROLLBACKCOST=&quot;D&quot;" />
+					<Publish Event="EnableRollback" Value="False" Condition="OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND PROMPTROLLBACKCOST=&quot;D&quot;" />
+					<Publish Event="SpawnDialog" Value="OutOfDiskDlg" Condition="(OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 1) OR (OutOfDiskSpace = 1 AND PROMPTROLLBACKCOST=&quot;F&quot;)" />
+				</Control>
+				<Control Id="Change" Type="PushButton" ElevationShield="yes" X="212" Y="243" Width="80" Height="17" Default="yes" Hidden="yes" Disabled="yes" Text="!(loc.VerifyReadyDlgChange)" ShowCondition="WixUI_InstallMode = &quot;Change&quot; AND ALLUSERS AND (ADDLOCAL OR REMOVE)" EnableCondition="WixUI_InstallMode = &quot;Change&quot;" DefaultCondition="WixUI_InstallMode = &quot;Change&quot;">
+					<Publish Event="EndDialog" Value="Return" Condition="OutOfDiskSpace &lt;&gt; 1" />
+					<Publish Event="SpawnDialog" Value="OutOfRbDiskDlg" Condition="OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND (PROMPTROLLBACKCOST=&quot;P&quot; OR NOT PROMPTROLLBACKCOST)" />
+					<Publish Event="EndDialog" Value="Return" Condition="OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND PROMPTROLLBACKCOST=&quot;D&quot;" />
+					<Publish Event="EnableRollback" Value="False" Condition="OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND PROMPTROLLBACKCOST=&quot;D&quot;" />
+					<Publish Event="SpawnDialog" Value="OutOfDiskDlg" Condition="(OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 1) OR (OutOfDiskSpace = 1 AND PROMPTROLLBACKCOST=&quot;F&quot;)" />
+				</Control>
+				<Control Id="ChangeNoShield" Type="PushButton" ElevationShield="no" X="212" Y="243" Width="80" Height="17" Default="yes" Hidden="yes" Disabled="yes" Text="!(loc.VerifyReadyDlgChange)" ShowCondition="WixUI_InstallMode = &quot;Change&quot; AND (NOT ALLUSERS OR (NOT ADDLOCAL AND NOT REMOVE))" EnableCondition="WixUI_InstallMode = &quot;Change&quot;" DefaultCondition="WixUI_InstallMode = &quot;Change&quot;">
+					<Publish Event="EndDialog" Value="Return" Condition="OutOfDiskSpace &lt;&gt; 1" />
+					<Publish Event="SpawnDialog" Value="OutOfRbDiskDlg" Condition="OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND (PROMPTROLLBACKCOST=&quot;P&quot; OR NOT PROMPTROLLBACKCOST)" />
+					<Publish Event="EndDialog" Value="Return" Condition="OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND PROMPTROLLBACKCOST=&quot;D&quot;" />
+					<Publish Event="EnableRollback" Value="False" Condition="OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND PROMPTROLLBACKCOST=&quot;D&quot;" />
+					<Publish Event="SpawnDialog" Value="OutOfDiskDlg" Condition="(OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 1) OR (OutOfDiskSpace = 1 AND PROMPTROLLBACKCOST=&quot;F&quot;)" />
+				</Control>
+				<Control Id="Repair" Type="PushButton" X="212" Y="243" Width="80" Height="17" Default="yes" Hidden="yes" Disabled="yes" Text="!(loc.VerifyReadyDlgRepair)" ShowCondition="WixUI_InstallMode = &quot;Repair&quot;" EnableCondition="WixUI_InstallMode = &quot;Repair&quot;" DefaultCondition="WixUI_InstallMode = &quot;Repair&quot;">
+					<Publish Event="ReinstallMode" Value="ecmus" Condition="OutOfDiskSpace &lt;&gt; 1" />
+					<Publish Event="Reinstall" Value="All" Condition="OutOfDiskSpace &lt;&gt; 1" />
+					<Publish Event="EndDialog" Value="Return" Condition="OutOfDiskSpace &lt;&gt; 1" />
+					<Publish Event="SpawnDialog" Value="OutOfRbDiskDlg" Condition="OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND (PROMPTROLLBACKCOST=&quot;P&quot; OR NOT PROMPTROLLBACKCOST)" />
+					<Publish Event="EndDialog" Value="Return" Condition="OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND PROMPTROLLBACKCOST=&quot;D&quot;" />
+					<Publish Event="EnableRollback" Value="False" Condition="OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND PROMPTROLLBACKCOST=&quot;D&quot;" />
+					<Publish Event="SpawnDialog" Value="OutOfDiskDlg" Condition="(OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 1) OR (OutOfDiskSpace = 1 AND PROMPTROLLBACKCOST=&quot;F&quot;)" />
+				</Control>
+				<Control Id="Remove" Type="PushButton" ElevationShield="yes" X="212" Y="243" Width="80" Height="17" Hidden="yes" Disabled="yes" Text="!(loc.VerifyReadyDlgRemove)" ShowCondition="WixUI_InstallMode = &quot;Remove&quot; AND ALLUSERS" EnableCondition="WixUI_InstallMode = &quot;Remove&quot;">
+					<Publish Event="Remove" Value="All" Condition="OutOfDiskSpace &lt;&gt; 1" />
+					<Publish Event="EndDialog" Value="Return" Condition="OutOfDiskSpace &lt;&gt; 1" />
+					<Publish Event="SpawnDialog" Value="OutOfRbDiskDlg" Condition="OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND (PROMPTROLLBACKCOST=&quot;P&quot; OR NOT PROMPTROLLBACKCOST)" />
+					<Publish Event="EndDialog" Value="Return" Condition="OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND PROMPTROLLBACKCOST=&quot;D&quot;" />
+					<Publish Event="EnableRollback" Value="False" Condition="OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND PROMPTROLLBACKCOST=&quot;D&quot;" />
+					<Publish Event="SpawnDialog" Value="OutOfDiskDlg" Condition="(OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 1) OR (OutOfDiskSpace = 1 AND PROMPTROLLBACKCOST=&quot;F&quot;)" />
+				</Control>
+				<Control Id="RemoveNoShield" Type="PushButton" ElevationShield="no" X="212" Y="243" Width="80" Height="17" Hidden="yes" Disabled="yes" Text="!(loc.VerifyReadyDlgRemove)" ShowCondition="WixUI_InstallMode = &quot;Remove&quot; AND NOT ALLUSERS" EnableCondition="WixUI_InstallMode = &quot;Remove&quot;">
+					<Publish Event="Remove" Value="All" Condition="OutOfDiskSpace &lt;&gt; 1" />
+					<Publish Event="EndDialog" Value="Return" Condition="OutOfDiskSpace &lt;&gt; 1" />
+					<Publish Event="SpawnDialog" Value="OutOfRbDiskDlg" Condition="OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND (PROMPTROLLBACKCOST=&quot;P&quot; OR NOT PROMPTROLLBACKCOST)" />
+					<Publish Event="EndDialog" Value="Return" Condition="OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND PROMPTROLLBACKCOST=&quot;D&quot;" />
+					<Publish Event="EnableRollback" Value="False" Condition="OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND PROMPTROLLBACKCOST=&quot;D&quot;" />
+					<Publish Event="SpawnDialog" Value="OutOfDiskDlg" Condition="(OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 1) OR (OutOfDiskSpace = 1 AND PROMPTROLLBACKCOST=&quot;F&quot;)" />
+				</Control>
+				<Control Id="Update" Type="PushButton" ElevationShield="yes" X="212" Y="243" Width="80" Height="17" Hidden="yes" Disabled="yes" Text="!(loc.VerifyReadyDlgUpdate)" ShowCondition="WixUI_InstallMode = &quot;Update&quot; AND ALLUSERS" EnableCondition="WixUI_InstallMode = &quot;Update&quot;">
+					<Publish Event="EndDialog" Value="Return" Condition="OutOfDiskSpace &lt;&gt; 1" />
+					<Publish Event="SpawnDialog" Value="OutOfRbDiskDlg" Condition="OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND (PROMPTROLLBACKCOST=&quot;P&quot; OR NOT PROMPTROLLBACKCOST)" />
+					<Publish Event="EndDialog" Value="Return" Condition="OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND PROMPTROLLBACKCOST=&quot;D&quot;" />
+					<Publish Event="EnableRollback" Value="False" Condition="OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND PROMPTROLLBACKCOST=&quot;D&quot;" />
+					<Publish Event="SpawnDialog" Value="OutOfDiskDlg" Condition="(OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 1) OR (OutOfDiskSpace = 1 AND PROMPTROLLBACKCOST=&quot;F&quot;)" />
+				</Control>
+				<Control Id="UpdateNoShield" Type="PushButton" ElevationShield="no" X="212" Y="243" Width="80" Height="17" Hidden="yes" Disabled="yes" Text="!(loc.VerifyReadyDlgUpdate)" ShowCondition="WixUI_InstallMode = &quot;Update&quot; AND NOT ALLUSERS" EnableCondition="WixUI_InstallMode = &quot;Update&quot;">
+					<Publish Event="EndDialog" Value="Return" Condition="OutOfDiskSpace &lt;&gt; 1" />
+					<Publish Event="SpawnDialog" Value="OutOfRbDiskDlg" Condition="OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND (PROMPTROLLBACKCOST=&quot;P&quot; OR NOT PROMPTROLLBACKCOST)" />
+					<Publish Event="EndDialog" Value="Return" Condition="OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND PROMPTROLLBACKCOST=&quot;D&quot;" />
+					<Publish Event="EnableRollback" Value="False" Condition="OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND PROMPTROLLBACKCOST=&quot;D&quot;" />
+					<Publish Event="SpawnDialog" Value="OutOfDiskDlg" Condition="(OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 1) OR (OutOfDiskSpace = 1 AND PROMPTROLLBACKCOST=&quot;F&quot;)" />
+				</Control>
+
+				<Control Id="InstallTitle" Type="Text" X="15" Y="60" Width="300" Height="15" Transparent="yes" NoPrefix="yes" Hidden="yes" Text="!(loc.VerifyReadyDlgInstallTitle)" ShowCondition="NOT Installed" />
+				<Control Id="InstallText" Type="Text" X="25" Y="90" Width="320" Height="80" Transparent="yes" Hidden="yes" Text="!(loc.VerifyReadyDlgInstallText)" ShowCondition="NOT Installed" />
+				<Control Id="ChangeTitle" Type="Text" X="15" Y="60" Width="300" Height="15" Transparent="yes" NoPrefix="yes" Hidden="yes" Text="!(loc.VerifyReadyDlgChangeTitle)" ShowCondition="WixUI_InstallMode = &quot;Change&quot;" />
+				<Control Id="ChangeText" Type="Text" X="25" Y="90" Width="320" Height="80" Transparent="yes" Hidden="yes" Text="!(loc.VerifyReadyDlgChangeText)" ShowCondition="WixUI_InstallMode = &quot;Change&quot;" />
+				<Control Id="RepairTitle" Type="Text" X="15" Y="60" Width="300" Height="15" Transparent="yes" NoPrefix="yes" Hidden="yes" Text="!(loc.VerifyReadyDlgRepairTitle)" ShowCondition="WixUI_InstallMode = &quot;Repair&quot;" />
+				<Control Id="RepairText" Type="Text" X="25" Y="90" Width="320" Height="80" Transparent="yes" Hidden="yes" NoPrefix="yes" Text="!(loc.VerifyReadyDlgRepairText)" ShowCondition="WixUI_InstallMode = &quot;Repair&quot;" />
+				<Control Id="RemoveTitle" Type="Text" X="15" Y="60" Width="300" Height="15" Transparent="yes" NoPrefix="yes" Hidden="yes" Text="!(loc.VerifyReadyDlgRemoveTitle)" ShowCondition="WixUI_InstallMode = &quot;Remove&quot;" />
+				<Control Id="RemoveText" Type="Text" X="25" Y="90" Width="320" Height="80" Transparent="yes" Hidden="yes" NoPrefix="yes" Text="!(loc.VerifyReadyDlgRemoveText)" ShowCondition="WixUI_InstallMode = &quot;Remove&quot;" />
+				<Control Id="UpdateTitle" Type="Text" X="15" Y="60" Width="300" Height="15" Transparent="yes" NoPrefix="yes" Hidden="yes" Text="!(loc.VerifyReadyDlgUpdateTitle)" ShowCondition="WixUI_InstallMode = &quot;Update&quot;" />
+				<Control Id="UpdateText" Type="Text" X="25" Y="90" Width="320" Height="80" Transparent="yes" Hidden="yes" NoPrefix="yes" Text="!(loc.VerifyReadyDlgUpdateText)" ShowCondition="WixUI_InstallMode = &quot;Update&quot;" />
+
+				<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="!(loc.WixUICancel)">
+					<Publish Event="SpawnDialog" Value="CancelDlg" />
+				</Control>
+				<Control Id="Back" Type="PushButton" X="156" Y="243" Width="56" Height="17" Text="!(loc.WixUIBack)" DefaultCondition="WixUI_InstallMode = &quot;Remove&quot;" >
+					<Publish Event="NewDialog" Value="GiteaPortDlg" Order="4" Condition="WixUI_InstallMode = &quot;Change&quot;" />
+					<Publish Event="NewDialog" Value="CustomMaintenanceTypeDlg" Order="5" Condition="WixUI_InstallMode = &quot;Repair&quot; OR WixUI_InstallMode = &quot;Remove&quot;" />
+					<Publish Event="NewDialog" Value="CustomWelcomeDlg" Order="2" Condition="WixUI_InstallMode = &quot;Update&quot;" />
+					<Publish Event="NewDialog" Value="GiteaPortDlg" Order="3" />
+				</Control>
+				<Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="WixUI_Bmp_Banner" />
+				<Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
+				<Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+			</Dialog>
+
+			<!-- CustomProgressDlg -->
+			<Dialog Id="CustomProgressDlg" Width="370" Height="270" Title="!(loc.ProgressDlg_Title)" Modeless="yes">
+				<Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="WixUI_Bmp_Banner" />
+				<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Default="yes" Cancel="yes" Text="!(loc.WixUICancel)">
+					<Publish Event="SpawnDialog" Value="CancelDlg" />
+				</Control>
+				<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Disabled="yes" Text="!(loc.WixUIBack)" />
+				<Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Disabled="yes" Text="!(loc.WixUINext)" />
+				<Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
+				<Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+				<!-- mutually exclusive title and description strings overlap  -->
+				<Control Id="TextInstalling" Type="Text" X="20" Y="60" Width="330" Height="35" Transparent="yes" Hidden="yes" NoPrefix="yes" Text="!(loc.ProgressDlgTitleInstalling)" ShowCondition="NOT Installed OR (Installed AND (RESUME OR Preselected) AND NOT PATCH)" />
+				<Control Id="TextChanging" Type="Text" X="20" Y="60" Width="330" Height="35" Transparent="yes" Hidden="yes" NoPrefix="yes" Text="!(loc.ProgressDlgTitleChanging)" ShowCondition="WixUI_InstallMode = &quot;Change&quot;" />
+				<Control Id="TextRepairing" Type="Text" X="20" Y="60" Width="330" Height="35" Transparent="yes" Hidden="yes" NoPrefix="yes" Text="!(loc.ProgressDlgTitleRepairing)" ShowCondition="WixUI_InstallMode = &quot;Repair&quot;" />
+				<Control Id="TextRemoving" Type="Text" X="20" Y="60" Width="330" Height="35" Transparent="yes" Hidden="yes" NoPrefix="yes" Text="!(loc.ProgressDlgTitleRemoving)" ShowCondition="WixUI_InstallMode = &quot;Remove&quot;" />
+				<Control Id="TextUpdating" Type="Text" X="20" Y="60" Width="330" Height="35" Transparent="yes" Hidden="yes" NoPrefix="yes" Text="!(loc.ProgressDlgTitleUpdating)" ShowCondition="WixUI_InstallMode = &quot;Update&quot;" />
+				<Control Id="ActionText" Type="Text" X="70" Y="90" Width="285" Height="10" Transparent="yes">
+					<Subscribe Event="ActionText" Attribute="Text" />
+				</Control>
+				<Control Id="ProgressBar" Type="ProgressBar" X="20" Y="105" Width="330" Height="10" ProgressBlocks="yes" Text="!(loc.ProgressDlgProgressBar)">
+					<Subscribe Event="SetProgress" Attribute="Progress" />
+				</Control>
+				<Control Id="StatusLabel" Type="Text" X="20" Y="90" Width="50" Height="10" Transparent="yes" Text="!(loc.ProgressDlgStatusLabel)" />
+			</Dialog>
+
+			<!-- CustomMaintenanceTypeDlg -->
+			<Dialog Id="CustomMaintenanceTypeDlg" Width="370" Height="270" Title="!(loc.MaintenanceTypeDlg_Title)">
+				<Control Id="ChangeButton" Type="PushButton" X="40" Y="65" Width="80" Height="17" ToolTip="!(loc.MaintenanceTypeDlgChangeButtonTooltip)" Default="yes" Text="!(loc.MaintenanceTypeDlgChangeButton)"
+                    DisableCondition="ARPNOMODIFY OR BURNMSIREPAIR OR BURNMSIUNINSTALL">
+					<Publish Property="WixUI_InstallMode" Value="Change" />
+					<Publish Event="NewDialog" Value="GiteaPortDlg" />
+				</Control>
+				<Control Id="ChangeText" Type="Text" X="60" Y="85" Width="280" Height="20" Transparent="yes" Text="!(loc.MaintenanceTypeDlgChangeText)"
+                    HideCondition="ARPNOMODIFY OR BURNMSIREPAIR OR BURNMSIUNINSTALL"
+                    />
+				<Control Id="ChangeDisabledText" Type="Text" X="60" Y="85" Width="280" Height="20" NoPrefix="yes" Transparent="yes" Text="!(loc.MaintenanceTypeDlgChangeDisabledText)"
+                    Hidden="yes" ShowCondition="ARPNOMODIFY OR BURNMSIREPAIR OR BURNMSIUNINSTALL"
+                    />
+
+				<Control Id="RepairButton" Type="PushButton" X="40" Y="118" Width="80" Height="17" ToolTip="!(loc.MaintenanceTypeDlgRepairButtonTooltip)" Text="!(loc.MaintenanceTypeDlgRepairButton)"
+                    DisableCondition="ARPNOREPAIR OR BURNMSIMODIFY OR BURNMSIUNINSTALL">
+					<Publish Property="WixUI_InstallMode" Value="Repair" />
+					<Publish Event="NewDialog" Value="GiteaPortDlg" />
+				</Control>
+				<Control Id="RepairText" Type="Text" X="60" Y="138" Width="280" Height="30" Transparent="yes" Text="!(loc.MaintenanceTypeDlgRepairText)"
+                    HideCondition="ARPNOREPAIR OR BURNMSIMODIFY OR BURNMSIUNINSTALL"
+                    />
+				<Control Id="RepairDisabledText" Type="Text" X="60" Y="138" Width="280" Height="30" NoPrefix="yes" Transparent="yes" Text="!(loc.MaintenanceTypeDlgRepairDisabledText)"
+                    Hidden="yes" ShowCondition="ARPNOREPAIR OR BURNMSIMODIFY OR BURNMSIUNINSTALL" />
+
+				<Control Id="RemoveButton" Type="PushButton" X="40" Y="171" Width="80" Height="17" ToolTip="!(loc.MaintenanceTypeDlgRemoveButtonTooltip)" Text="!(loc.MaintenanceTypeDlgRemoveButton)"
+                    DisableCondition="ARPNOREMOVE OR BURNMSIREPAIR OR BURNMSIMODIFY">
+					<Publish Property="WixUI_InstallMode" Value="Remove" />
+					<Publish Event="NewDialog" Value="CustomVerifyReadyDlg" />
+				</Control>
+				<Control Id="RemoveText" Type="Text" X="60" Y="191" Width="280" Height="20" NoPrefix="yes" Transparent="yes" Text="!(loc.MaintenanceTypeDlgRemoveText)"
+                    HideCondition="ARPNOREMOVE OR BURNMSIREPAIR OR BURNMSIMODIFY"
+                    />
+				<Control Id="RemoveDisabledText" Type="Text" X="60" Y="191" Width="280" Height="20" NoPrefix="yes" Transparent="yes" Text="!(loc.MaintenanceTypeDlgRemoveDisabledText)" Hidden="yes"
+                    ShowCondition="ARPNOREMOVE OR BURNMSIREPAIR OR BURNMSIMODIFY"
+                    />
+
+				<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="!(loc.WixUIBack)">
+					<Publish Event="NewDialog" Value="MaintenanceWelcomeDlg" />
+				</Control>
+				<Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Disabled="yes" Text="!(loc.WixUINext)" />
+				<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="!(loc.WixUICancel)">
+					<Publish Event="SpawnDialog" Value="CancelDlg" />
+				</Control>
+				<Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="!(loc.MaintenanceTypeDlgBannerBitmap)" />
+				<Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
+				<Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+				<Control Id="Title" Type="Text" X="120" Y="6" Width="200" Height="15" Transparent="yes" NoPrefix="yes" Text="!(loc.MaintenanceTypeDlgTitle)" />
+				<Control Id="Description" Type="Text" X="120" Y="23" Width="200" Height="20" Transparent="yes" NoPrefix="yes" Text="!(loc.MaintenanceTypeDlgDescription)" />
+			</Dialog>
+			
+			
+			
+		</UI>
+
+		<UIRef Id="WixUI_Common" />
+
+	</Fragment>
+</Wix>

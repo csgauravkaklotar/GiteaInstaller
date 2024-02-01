@@ -3,6 +3,70 @@ This file contains the declaration of all the localizable strings.
 -->
 <WixLocalization xmlns="http://wixtoolset.org/schemas/v4/wxl" Culture="en-US">
 
-  <String Id="DowngradeError" Value="A newer version of [ProductName] is already installed." />
+	<String Id="DowngradeError" Value="A newer version of [ProductName] is already installed." />
+	<String
+		Id="ProductNameFolder"
+		Value="Gitea" />
 
+	<String
+		Id="ProductName"
+		Value="Gitea" />
+
+	<String
+		Id="ManufactorerName"
+		Value="Gitea Installer, LLC" />
+
+	<String
+		Id="DowngradeErrorMessage"
+		Value="A newer version of [ProductName] is already installed." />
+
+	<String
+		Id="Language"
+		Value="1033" />
+
+	<String
+		Id="ServiceName"
+		Value="Gitea Service"/>
+
+	<String
+		Id="ServiceDescription"
+		Value="Collects events and logs from RABBITMQ, ES, MSSQL/PGSQL."/>
+
+	<String Id="DotnetErrorContent"
+			Value=".NET runtime 7.0.4 or higher required"/>
+
+	<String Id="DotnetErrorTitle"
+			Value=".NET not found!"/>
+
+	<String Id="DownloadUrl"
+			Value="Install .NET"/>
+
+	<String Id="BackButtonText" Value="&amp;Back" />
+	<String Id="CancelButtonText" Value="Cancel" />
+	<String Id="NextButtonText" Value="Next" />
+	<String Id="DialogTitle" Value="[ProductName] Setup" />
+
+	<String Id="GiteaPortDlgDescription" Value="Please enter the port that the Gitea should be listen on." />
+	<String Id="GiteaPortDlgText" Value="The Gitea needs the port the service will listen on." />
+	<String Id="GiteaPortDlgTitle" Value="{\WixUI_Font_Title}Gitea Port" />
+
+	<String Id="PMSConfigDlgDescription" Value="Please enter the Host name and InstallSVC port of Peregrine Management Suite" />
+	<String Id="PMSHostDlgText" Value="The Peregrine Metricbeat needs the Peregrine Managemenet Suite HostName" />
+	<String Id="PMSInstallSVCPortDlgText" Value="The Peregrine Metricbeat needs the Peregrine Installsvc Port" />
+
+	<String Id="PMSConfigDlgTitle" Value="{\WixUI_Font_Title}Peregrine Management Suite Configuration" />
+
+	<!--<String Id="VerifyReadyDlgInstallTitle" Value="" Overridable="yes"/>
+	<String Id="VerifyReadyDlgRemoveTitle" Value="" Overridable="yes"/>
+	<String Id="ProgressDlgTitleInstalling" Value="" Overridable="yes"/>
+	<String Id="MaintenanceTypeDlgTitle" Value="" Overridable="yes"/>
+	<String Id="MaintenanceTypeDlgDescription" Value="" Overridable="yes"/>
+	<String Id="FilesInUseDescription" Value=""/>
+	<String Id="FilesInUseTitle" Value="" />-->
+	<String Id="MsiRMFilesInUseDescription" Value=""/>
+	<String Id="MsiRMFilesInUseTitle" Value="" />
+	
+	<!--Service Account-->
+	<!--<String Id="ServiceAccountTitle" Value="Service Account" />-->
+	
 </WixLocalization>

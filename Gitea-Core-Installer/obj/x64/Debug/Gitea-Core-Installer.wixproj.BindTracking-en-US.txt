@@ -1,4 +1,11 @@
 BuiltPdbOutput	C:\Users\LENOVO\Desktop\GiteaInstaller\Gitea-Core-Installer\obj\x64\Debug\en-US\Gitea-Core-Installer.wixpdb
 BuiltTargetOutput	C:\Users\LENOVO\Desktop\GiteaInstaller\Gitea-Core-Installer\obj\x64\Debug\en-US\Gitea-Core-Installer.msi
+Input	C:\Users\LENOVO\.nuget\packages\wixtoolset.ui.wixext\4.0.3\wixext4\WixToolset.UI.wixext.dll
 Input	C:\Users\LENOVO\Desktop\GiteaInstaller\Gitea-Core-Installer\Assets\GiteaBuild\gitea.exe
 Intermediate	C:\Users\LENOVO\Desktop\GiteaInstaller\Gitea-Core-Installer\obj\x64\Debug\en-US\#cab1.cab
+Intermediate	C:\Users\LENOVO\Desktop\GiteaInstaller\Gitea-Core-Installer\obj\x64\Debug\en-US\WixToolset.UI.wixext_MdmxfkeDGpB7GpuXWlNfU2ndKu0\wix-ir\bannrbmp.bmp
+Intermediate	C:\Users\LENOVO\Desktop\GiteaInstaller\Gitea-Core-Installer\obj\x64\Debug\en-US\WixToolset.UI.wixext_MdmxfkeDGpB7GpuXWlNfU2ndKu0\wix-ir\dlgbmp.bmp
+Intermediate	C:\Users\LENOVO\Desktop\GiteaInstaller\Gitea-Core-Installer\obj\x64\Debug\en-US\WixToolset.UI.wixext_MdmxfkeDGpB7GpuXWlNfU2ndKu0\wix-ir\exclamic.ico
+Intermediate	C:\Users\LENOVO\Desktop\GiteaInstaller\Gitea-Core-Installer\obj\x64\Debug\en-US\WixToolset.UI.wixext_MdmxfkeDGpB7GpuXWlNfU2ndKu0\wix-ir\info.ico
+Intermediate	C:\Users\LENOVO\Desktop\GiteaInstaller\Gitea-Core-Installer\obj\x64\Debug\en-US\WixToolset.UI.wixext_MdmxfkeDGpB7GpuXWlNfU2ndKu0\wix-ir\new.ico
+Intermediate	C:\Users\LENOVO\Desktop\GiteaInstaller\Gitea-Core-Installer\obj\x64\Debug\en-US\WixToolset.UI.wixext_MdmxfkeDGpB7GpuXWlNfU2ndKu0\wix-ir\up.ico
