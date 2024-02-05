@@ -28,7 +28,9 @@
 			<TextStyle Id="WixUI_Font_Normal" FaceName="Tahoma" Size="8" />
 			<TextStyle Id="WixUI_Font_Bigger" FaceName="Tahoma" Size="12" />
 			<TextStyle Id="WixUI_Font_Title" FaceName="Tahoma" Size="8" Bold="yes" />
-
+			<TextStyle Id="EnabledText" FaceName="Tahoma" Size="8"  />
+			<TextStyle Id="DisabledText" FaceName="Tahoma" Size="8" Red="132" Green="126" Blue="134"  />
+			
 			<Property Id="DefaultUIFont" Value="WixUI_Font_Normal" />
 			<Property Id="WixUI_Mode" Value="Mondo" />
 
@@ -42,9 +44,9 @@
 
 			<Publish Dialog="ExitDialog" Control="Finish" Event="EndDialog" Value="Return" Order="999" />
 
-			<Publish Dialog="CustomWelcomeDlg" Control="Next" Event="NewDialog" Value="GiteaPortDlg" Condition="NOT Installed AND NOT PATCH" />
-			<Publish Dialog="CustomWelcomeDlg" Control="Next" Event="NewDialog" Value="GiteaPortDlg" Condition="Installed AND PATCH" />
-			<Publish Dialog="CustomWelcomeDlg" Control="Next" Event="NewDialog" Value="GiteaPortDlg" Condition="Installed AND (RESUME OR Preselected)" />
+			<Publish Dialog="CustomWelcomeDlg" Control="Next" Event="NewDialog" Value="ServiceAccountDlg" Condition="NOT Installed AND NOT PATCH" />
+			<Publish Dialog="CustomWelcomeDlg" Control="Next" Event="NewDialog" Value="ServiceAccountDlg" Condition="Installed AND PATCH" />
+			<Publish Dialog="CustomWelcomeDlg" Control="Next" Event="NewDialog" Value="ServiceAccountDlg" Condition="Installed AND (RESUME OR Preselected)" />
 
 			<Publish Dialog="MaintenanceWelcomeDlg" Control="Next" Event="NewDialog" Value="CustomMaintenanceTypeDlg" />
 			
@@ -67,31 +69,170 @@
 			</Dialog>
 			
 			<!--ServiceAccountDlg-->
-			<!--<Dialog Id="ServiceAccountDlg" Height="270" Title="!(loc.DialogTitle)" Width="370">
+			<Dialog Id="ServiceAccountDlg" Height="270" Title="!(loc.DialogTitle)" Width="370">
+
+				<Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" Text="WixUI_Bmp_Banner" />
+				<Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="1" />
+				
+				<!--Back, Next and Cancle Buttons-->
+				<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="!(loc.BackButtonText)">
+					<Publish Event="NewDialog" Value="CustomWelcomeDlg" />
+				</Control>
+				<Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Text="!(loc.NextButtonText)">
+					<Publish Event="NewDialog" Value="DatabaseSetupDlg" />
+				</Control>
+				<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Text="!(loc.CancelButtonText)" Cancel="yes">
+					<Publish Event="SpawnDialog" Value="CancelDlg" />
+				</Control>
+				<Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+				
+				<!--Title-->
 				<Control Id="Title" Type="Text" X="15" Y="60" Width="200" Height="15" NoPrefix="yes" Transparent="yes" Text="!(loc.ServiceAccountTitle)" />
-			</Dialog>--> 
+				
+				
+				<!--RadioGroupButton
+					Property: Name of the property to be linked to this content.-->
+				<Control Id="URadioButtonGroup1" Type="RadioButtonGroup" Property="USELOCALSYSTEM" X="25" Y="68" Width="152" Height="40">
+					<Publish Property="SERVICEACCOUNT_ERROR" Value="0" />
+					<Publish Property="USELOCALSYSTEM" Value="[USELOCALSYSTEM]" />
+				</Control>
+				
+				<Control Id="UEdit1" Type="Edit" X="119" Y="115" Width="120" Height="15" Property="SERVICEDOMAIN" ToolTip="Enter domain or machine name..." Text="[SERVICEDOMAIN]" Indirect="no" EnableCondition="USELOCALSYSTEM = &quot;No&quot;" DisableCondition="USELOCALSYSTEM = &quot;Yes&quot;" />
+				<Control Id="UEdit2" Type="Edit" X="119" Y="133" Width="120" Height="15" Property="SERVICEUSER" ToolTip="Enter the user account name..." Text="[SERVICEUSER]" Indirect="no" EnableCondition="USELOCALSYSTEM = &quot;No&quot;" DisableCondition="USELOCALSYSTEM = &quot;Yes&quot;" />
+				<Control Id="UEdit3" Type="Edit" X="119" Y="151" Width="120" Height="15" Property="SERVICEPASSWORD" Password="yes" ToolTip="Enter the password for the user..." EnableCondition="USELOCALSYSTEM = &quot;No&quot;" DisableCondition="USELOCALSYSTEM = &quot;Yes&quot;" />
+				<Control Id="UText1" Type="Text" Text="{\DisabledText}Domain/Machine:"  X="43" Y="115" Width="68" Height="12" Transparent="yes" ShowCondition="USELOCALSYSTEM = &quot;Yes&quot;" HideCondition="USELOCALSYSTEM = &quot;No&quot;" />
+				<Control Id="UText2" Type="Text" Text="{\EnabledText}Domain/Machine:"  X="43" Y="115" Width="68" Height="12" Transparent="yes" ShowCondition="USELOCALSYSTEM = &quot;No&quot;" HideCondition="USELOCALSYSTEM = &quot;Yes&quot;" />
+				<Control Id="UText3" Type="Text" Text="{\DisabledText}User Name:" X="43" Transparent="yes" ShowCondition="USELOCALSYSTEM = &quot;Yes&quot;" HideCondition="USELOCALSYSTEM = &quot;No&quot;" Y="133" Width="50" Height="12" />
+				<Control Id="UText4" Type="Text" Text="{\EnabledText}User Name:" X="43" Transparent="yes" ShowCondition="USELOCALSYSTEM = &quot;No&quot;" HideCondition="USELOCALSYSTEM = &quot;Yes&quot;" Y="133" Width="50" Height="12" />
+				<Control Id="UText5" Type="Text" Text="{\DisabledText}Password:" X="43" Transparent="yes" ShowCondition="USELOCALSYSTEM = &quot;Yes&quot;" HideCondition="USELOCALSYSTEM = &quot;No&quot;" Y="151" Width="50" Height="12" />
+				<Control Id="UText6" Type="Text" Text="{\EnabledText}Password:" X="43" Transparent="yes" ShowCondition="USELOCALSYSTEM = &quot;No&quot;" HideCondition="USELOCALSYSTEM = &quot;Yes&quot;" Y="151" Width="50" Height="12" />
+			</Dialog>
+			
+			<!--RadioButtonGroup-->
+			<RadioButtonGroup Property="USELOCALSYSTEM">
+				<RadioButton Value="Yes" Text="Use the built in Local System account" X="5" Y="12" Width="180" Height="15" />
+				<RadioButton Value="No" Text="Use a domain user account" X="5" Y="28" Width="150" Height="15" />
+			</RadioButtonGroup>
+			
+			<!--DatabaseSetupDlg-->
+			<Dialog Id="DatabaseSetupDlg" Height="270" Title="!(loc.DialogTitle)" Width="370">
+
+				<Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" Text="WixUI_Bmp_Banner" />
+				<Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="1" />
+				
+				<!--Back, Next and Cancle Buttons-->
+				<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="!(loc.BackButtonText)">
+					<Publish Event="NewDialog" Value="ServiceAccountDlg" />
+				</Control>
+				<Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Text="!(loc.NextButtonText)">
+					<Publish Event="NewDialog" Value="GiteaPortDlg" />
+				</Control>
+				<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Text="!(loc.CancelButtonText)" Cancel="yes">
+					<Publish Event="SpawnDialog" Value="CancelDlg" />
+				</Control>
+				<Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+			
+				<!--Title-->
+				<Control Id="Title" Type="Text" X="15" Y="60" Width="200" Height="15" NoPrefix="yes" Transparent="yes" Text="!(loc.DatabaseSetupTitle)" />
+				
+				<!--Dropdown Menu-->
+				<Control Id="DatabaseName" Type="ComboBox" X="15" Y="75" Width="200" Height="18" Property="DATABASENAME" Sorted="yes" ComboList="yes">
+					<ComboBox Property="DATABASENAME">
+						<ListItem Value="MSSQL" Text="MSSQL" />
+						<ListItem Value="MYSQL" Text="MYSQL" />
+						<ListItem Value="POSTGRESQL" Text="POSTGRE SQL" />
+						<ListItem Value="SQLITE3" Text="SQLITE3" />
+					</ComboBox>
+				</Control>
+				
+				<!--Setup options: MSSQL-->
+				<Control Id="MssqlHost" Type="Text" X="15" Y="105" Width="200" Height="15" NoPrefix="yes" Transparent="yes" Text="Host" ShowCondition="DATABASENAME = &quot;MSSQL&quot;" HideCondition="DATABASENAME = &quot;MYSQL&quot; OR DATABASENAME = &quot;POSTGRESQL&quot; OR DATABASENAME = &quot;SQLITE3&quot;" />
+				<Control Id="MssqlUsername" Type="Text" X="15" Y="123" Width="200" Height="15" NoPrefix="yes" Transparent="yes" Text="Username" ShowCondition="DATABASENAME = &quot;MSSQL&quot;" HideCondition="DATABASENAME = &quot;MYSQL&quot; OR DATABASENAME = &quot;POSTGRESQL&quot; OR DATABASENAME = &quot;SQLITE3&quot;" />
+				<Control Id="MssqlPassword" Type="Text" X="15" Y="141" Width="200" Height="15" NoPrefix="yes" Transparent="yes" Text="Password" ShowCondition="DATABASENAME = &quot;MSSQL&quot;" HideCondition="DATABASENAME = &quot;MYSQL&quot; OR DATABASENAME = &quot;POSTGRESQL&quot; OR DATABASENAME = &quot;SQLITE3&quot;" />
+				<Control Id="MssqlDatabase" Type="Text" X="15" Y="159" Width="200" Height="15" NoPrefix="yes" Transparent="yes" Text="Database" ShowCondition="DATABASENAME = &quot;MSSQL&quot;" HideCondition="DATABASENAME = &quot;MYSQL&quot; OR DATABASENAME = &quot;POSTGRESQL&quot; OR DATABASENAME = &quot;SQLITE3&quot;" />
+
+				<Control Id="MSSQLEdit1" Type="Edit" X="100" Y="105" Width="120" Height="15" Property="MSSQLHOST" ToolTip="Enter Host..." Text="[MSSQLHOST]" Indirect="no" ShowCondition="DATABASENAME = &quot;MSSQL&quot;" HideCondition="DATABASENAME = &quot;MYSQL&quot; OR DATABASENAME = &quot;POSTGRESQL&quot; OR DATABASENAME = &quot;SQLITE3&quot;"/>
+				<Control Id="MSSQLEdit2" Type="Edit" X="100" Y="123" Width="120" Height="15" Property="MSSQLUSERNAME" ToolTip="Enter Username..." Text="[MSSQLUSERNAME]" Indirect="no" ShowCondition="DATABASENAME = &quot;MSSQL&quot;" HideCondition="DATABASENAME = &quot;MYSQL&quot; OR DATABASENAME = &quot;POSTGRESQL&quot; OR DATABASENAME = &quot;SQLITE3&quot;"/>
+				<Control Id="MSSQLEdit3" Type="Edit" X="100" Y="141" Width="120" Height="15" Property="MSSQLPASSWORD" ToolTip="Enter Password..." Password="yes" Indirect="no" ShowCondition="DATABASENAME = &quot;MSSQL&quot;" HideCondition="DATABASENAME = &quot;MYSQL&quot; OR DATABASENAME = &quot;POSTGRESQL&quot; OR DATABASENAME = &quot;SQLITE3&quot;"/>
+				<Control Id="MSSQLEdit4" Type="Edit" X="100" Y="159" Width="120" Height="15" Property="MSSQLDATABASE" ToolTip="Enter Database name..." Text="[MSSQLDATABASE]" Indirect="no" ShowCondition="DATABASENAME = &quot;MSSQL&quot;" HideCondition="DATABASENAME = &quot;MYSQL&quot; OR DATABASENAME = &quot;POSTGRESQL&quot; OR DATABASENAME = &quot;SQLITE3&quot;"/>
+
+
+				<!--Setup options: MYSQL-->
+				<Control Id="MysqlHost" Type="Text" X="15" Y="105" Width="200" Height="15" NoPrefix="yes" Transparent="yes" Text="Host" ShowCondition="DATABASENAME = &quot;MYSQL&quot;" HideCondition="DATABASENAME = &quot;MSSQL&quot; OR DATABASENAME = &quot;POSTGRESQL&quot; OR DATABASENAME = &quot;SQLITE3&quot;" />
+				<Control Id="MysqlUsername" Type="Text" X="15" Y="123" Width="200" Height="15" NoPrefix="yes" Transparent="yes" Text="Username" ShowCondition="DATABASENAME = &quot;MYSQL&quot;" HideCondition="DATABASENAME = &quot;MSSQL&quot; OR DATABASENAME = &quot;POSTGRESQL&quot; OR DATABASENAME = &quot;SQLITE3&quot;" />
+				<Control Id="MysqlPassword" Type="Text" X="15" Y="141" Width="200" Height="15" NoPrefix="yes" Transparent="yes" Text="Password" ShowCondition="DATABASENAME = &quot;MYSQL&quot;" HideCondition="DATABASENAME = &quot;MSSQL&quot; OR DATABASENAME = &quot;POSTGRESQL&quot; OR DATABASENAME = &quot;SQLITE3&quot;" />
+				<Control Id="MysqlDatabase" Type="Text" X="15" Y="159" Width="200" Height="15" NoPrefix="yes" Transparent="yes" Text="Database" ShowCondition="DATABASENAME = &quot;MYSQL&quot;" HideCondition="DATABASENAME = &quot;MSSQL&quot; OR DATABASENAME = &quot;POSTGRESQL&quot; OR DATABASENAME = &quot;SQLITE3&quot;" />
+
+				<Control Id="MYSQLEdit1" Type="Edit" X="100" Y="105" Width="120" Height="15" Property="MYSQLHOST" ToolTip="Enter Host..." Text="[MYSQLHOST]" Indirect="no" ShowCondition="DATABASENAME = &quot;MYSQL&quot;" HideCondition="DATABASENAME = &quot;MSSQL&quot; OR DATABASENAME = &quot;POSTGRESQL&quot; OR DATABASENAME = &quot;SQLITE3&quot;"/>
+				<Control Id="MYSQLEdit2" Type="Edit" X="100" Y="123" Width="120" Height="15" Property="MYSQLUSERNAME" ToolTip="Enter Username..." Text="[MYSQLUSERNAME]" Indirect="no" ShowCondition="DATABASENAME = &quot;MYSQL&quot;" HideCondition="DATABASENAME = &quot;MSSQL&quot; OR DATABASENAME = &quot;POSTGRESQL&quot; OR DATABASENAME = &quot;SQLITE3&quot;"/>
+				<Control Id="MYSQLEdit3" Type="Edit" X="100" Y="141" Width="120" Height="15" Property="MYSQLPASSWORD" ToolTip="Enter Password..." Password="yes" Indirect="no" ShowCondition="DATABASENAME = &quot;MYSQL&quot;" HideCondition="DATABASENAME = &quot;MSSQL&quot; OR DATABASENAME = &quot;POSTGRESQL&quot; OR DATABASENAME = &quot;SQLITE3&quot;"/>
+				<Control Id="MYSQLEdit4" Type="Edit" X="100" Y="159" Width="120" Height="15" Property="MYSQLDATABASE" ToolTip="Enter Database name..." Text="[MYQLDATABASE]" Indirect="no" ShowCondition="DATABASENAME = &quot;MYSQL&quot;" HideCondition="DATABASENAME = &quot;MSSQL&quot; OR DATABASENAME = &quot;POSTGRESQL&quot; OR DATABASENAME = &quot;SQLITE3&quot;"/>
+
+
+				<!--Setup options: POSTGRESQL-->
+				<Control Id="PostgresqlHost" Type="Text" X="15" Y="105" Width="200" Height="15" NoPrefix="yes" Transparent="yes" Text="Host" ShowCondition="DATABASENAME = &quot;POSTGRESQL&quot;" HideCondition="DATABASENAME = &quot;MSSQL&quot; OR DATABASENAME = &quot;MYSQL&quot; OR DATABASENAME = &quot;SQLITE3&quot;" />
+				<Control Id="PostgresqlUsername" Type="Text" X="15" Y="123" Width="200" Height="15" NoPrefix="yes" Transparent="yes" Text="Username" ShowCondition="DATABASENAME = &quot;POSTGRESQL&quot;" HideCondition="DATABASENAME = &quot;MSSQL&quot; OR DATABASENAME = &quot;MYSQL&quot; OR DATABASENAME = &quot;SQLITE3&quot;" />
+				<Control Id="PostgresqlPassword" Type="Text" X="15" Y="141" Width="200" Height="15" NoPrefix="yes" Transparent="yes" Text="Password" ShowCondition="DATABASENAME = &quot;POSTGRESQL&quot;" HideCondition="DATABASENAME = &quot;MSSQL&quot; OR DATABASENAME = &quot;MYSQL&quot; OR DATABASENAME = &quot;SQLITE3&quot;" />
+				<Control Id="PostgresqlDatabase" Type="Text" X="15" Y="159" Width="200" Height="15" NoPrefix="yes" Transparent="yes" Text="Database" ShowCondition="DATABASENAME = &quot;POSTGRESQL&quot;" HideCondition="DATABASENAME = &quot;MSSQL&quot; OR DATABASENAME = &quot;MYSQL&quot; OR DATABASENAME = &quot;SQLITE3&quot;" />
+				<Control Id="PostgresqlSchema" Type="Text" X="15" Y="177" Width="200" Height="15" NoPrefix="yes" Transparent="yes" Text="Schema" ShowCondition="DATABASENAME = &quot;POSTGRESQL&quot;" HideCondition="DATABASENAME = &quot;MSSQL&quot; OR DATABASENAME = &quot;MYSQL&quot; OR DATABASENAME = &quot;SQLITE3&quot;" />
+				<Control Id="PostgresqlIsSSL" Type="Text" X="15" Y="195" Width="200" Height="15" NoPrefix="yes" Transparent="yes" Text="Is SSL" ShowCondition="DATABASENAME = &quot;POSTGRESQL&quot;" HideCondition="DATABASENAME = &quot;MSSQL&quot; OR DATABASENAME = &quot;MYSQL&quot; OR DATABASENAME = &quot;SQLITE3&quot;" />
+
+				<Control Id="POSTGRESQLEdit1" Type="Edit" X="100" Y="105" Width="120" Height="15" Property="POSTGRESQLHOST" ToolTip="Enter Host..." Text="[POSTGRESQLHOST]" Indirect="no" ShowCondition="DATABASENAME = &quot;POSTGRESQL&quot;" HideCondition="DATABASENAME = &quot;MSSQL&quot; OR DATABASENAME = &quot;MYSQL&quot; OR DATABASENAME = &quot;SQLITE3&quot;"/>
+				<Control Id="POSTGRESQLEdit2" Type="Edit" X="100" Y="123" Width="120" Height="15" Property="POSTGRESQLUSERNAME" ToolTip="Enter Username..." Text="[POSTGRESQLUSERNAME]" Indirect="no" ShowCondition="DATABASENAME = &quot;POSTGRESQL&quot;" HideCondition="DATABASENAME = &quot;MSSQL&quot; OR DATABASENAME = &quot;MYSQL&quot; OR DATABASENAME = &quot;SQLITE3&quot;"/>
+				<Control Id="POSTGRESQLEdit3" Type="Edit" X="100" Y="141" Width="120" Height="15" Property="POSTGRESQLPASSWORD" ToolTip="Enter Password..." Password="yes" Indirect="no" ShowCondition="DATABASENAME = &quot;POSTGRESQL&quot;" HideCondition="DATABASENAME = &quot;MSSQL&quot; OR DATABASENAME = &quot;MYSQL&quot; OR DATABASENAME = &quot;SQLITE3&quot;"/>
+				<Control Id="POSTGRESQLEdit4" Type="Edit" X="100" Y="159" Width="120" Height="15" Property="POSTGRESQLDATABASE" ToolTip="Enter Database name..." Text="[POSTGRESQLDATABASE]" Indirect="no" ShowCondition="DATABASENAME = &quot;POSTGRESQL&quot;" HideCondition="DATABASENAME = &quot;MSSQL&quot; OR DATABASENAME = &quot;MYSQL&quot; OR DATABASENAME = &quot;SQLITE3&quot;"/>
+				<Control Id="POSTGRESQLEdit5" Type="Edit" X="100" Y="177" Width="120" Height="15" Property="POSTGRESQLSCHEMA" ToolTip="Enter Schema..." Text="[POSTGRESQLSCHEMA]" Indirect="no" ShowCondition="DATABASENAME = &quot;POSTGRESQL&quot;" HideCondition="DATABASENAME = &quot;MSSQL&quot; OR DATABASENAME = &quot;MYSQL&quot; OR DATABASENAME = &quot;SQLITE3&quot;"/>
+				<Control Id="POSTGRESQLEdit6" Type="ComboBox" X="100" Y="195" Width="200" Height="18" Property="POSTGRESQLSSL" Sorted="yes" ComboList="yes" ToolTip="Select SSL Option..." Indirect="no" ShowCondition="DATABASENAME = &quot;POSTGRESQL&quot;" HideCondition="DATABASENAME = &quot;MSSQL&quot; OR DATABASENAME = &quot;MYSQL&quot; OR DATABASENAME = &quot;SQLITE3&quot;">
+					<ComboBox Property="POSTGRESQLSSL">
+						<ListItem Value="Disable" Text="Disable" />
+						<ListItem Value="Require" Text="Require" />
+						<ListItem Value="VeryFull" Text="Very Full" />
+					</ComboBox>
+				</Control>
+
+
+				<!--Setup options: SQLITE3-->
+				<Control Id="Sqlite3Path" Type="Text" X="15" Y="105" Width="200" Height="15" NoPrefix="yes" Transparent="yes" Text="Path" ShowCondition="DATABASENAME = &quot;SQLITE3&quot;" HideCondition="DATABASENAME = &quot;MSSQL&quot; OR DATABASENAME = &quot;POSTGRESQL&quot; OR DATABASENAME = &quot;MYSQL&quot;" />
+
+				<Control Id="SQLITE3Edit1" Type="Edit" X="100" Y="105" Width="120" Height="15" Property="SQLITE3PATH" ToolTip="Enter Path..." Text="[SQLITE3PATH]" Indirect="no" ShowCondition="DATABASENAME = &quot;SQLITE3&quot;" HideCondition="DATABASENAME = &quot;MSSQL&quot; OR DATABASENAME = &quot;POSTGRESQL&quot; OR DATABASENAME = &quot;MYSQL&quot;"/>
+			</Dialog>
 			
 			<!--GiteaPortDlg-->
 			<Dialog Id="GiteaPortDlg" Height="270" Title="!(loc.DialogTitle)" Width="370">
 				<Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" Text="WixUI_Bmp_Banner" />
 				<Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="1" />
-				<Control Id="Title" Type="Text" X="15" Y="60" Width="200" Height="15" NoPrefix="yes" Transparent="yes" Text="!(loc.GiteaPortDlgTitle)" />
-				<Control Id="Text" Type="Text" X="25" Y="90" Width="330" Height="20" Text="!(loc.GiteaPortDlgText)" Transparent="yes" />
-				<Control Id="GiteaPort" Type="Edit" X="25" Y="110" Width="100" Height="20" Property="GITEAPORT" />
-				<Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+
+				<!--Back, Next and Cancle Buttons-->
 				<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="!(loc.BackButtonText)">
-					<Publish Event="NewDialog" Value="CustomWelcomeDlg" />
-					<Publish Event="NewDialog" Value="CustomMaintenanceTypeDlg" Condition="WixUI_InstallMode = &quot;Repair&quot; OR WixUI_InstallMode = &quot;Change&quot; OR WixUI_InstallMode = &quot;Update&quot;" />
-					<Publish Event="NewDialog" Value="ResumeDlg" Condition="Installed AND (RESUME OR Preselected)" />
+					<Publish Event="NewDialog" Value="DatabaseSetupDlg" />
 				</Control>
 				<Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Text="!(loc.NextButtonText)">
 					<Publish Event="NewDialog" Value="CustomVerifyReadyDlg" />
-					<Publish Event="EndDialog" Value="Return" Condition="Installed AND (RESUME OR Preselected)"/>
 				</Control>
-				
 				<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Text="!(loc.CancelButtonText)" Cancel="yes">
 					<Publish Event="SpawnDialog" Value="CancelDlg" />
 				</Control>
+				<Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+
+				<!--Title-->
+				<Control Id="Title" Type="Text" X="15" Y="60" Width="200" Height="15" NoPrefix="yes" Transparent="yes" Text="!(loc.GiteaPortDlgTitle)" />
+
+
+				<Control Id="SiteTitle" Type="Text" X="15" Y="75" Width="200" Height="15" NoPrefix="yes" Transparent="yes" Text="Site Title" />
+				<Control Id="RepoRootPath" Type="Text" X="15" Y="93" Width="200" Height="15" NoPrefix="yes" Transparent="yes" Text="Repository Root Path" />
+				<Control Id="RunAsUsername" Type="Text" X="15" Y="111" Width="200" Height="15" NoPrefix="yes" Transparent="yes" Text="Run As Username" />
+				<Control Id="ServerDomain" Type="Text" X="15" Y="129" Width="200" Height="15" NoPrefix="yes" Transparent="yes" Text="Server Domain" />
+				<Control Id="GiteaListenPort" Type="Text" X="15" Y="147" Width="200" Height="15" NoPrefix="yes" Transparent="yes" Text="Gitea HTTP Listen Port" />
+				<Control Id="GiteaBaseURL" Type="Text" X="15" Y="165" Width="200" Height="15" NoPrefix="yes" Transparent="yes" Text="Gitea Base URL" />
+				<Control Id="LogPath" Type="Text" X="15" Y="183" Width="200" Height="15" NoPrefix="yes" Transparent="yes" Text="Log Path" />
+
+				<Control Id="GITEAPORTEdit1" Type="Edit" X="100" Y="75" Width="200" Height="15" Property="SETTILE" ToolTip="Enter Site Title..." Text="[SETTILE]" Indirect="no"/>
+				<Control Id="GITEAPORTEdit2" Type="Edit" X="100" Y="93" Width="200" Height="15" Property="REPOROOTPATH" ToolTip="Enter Repository Rooth Path..." Text="[REPOROOTPATH]" Indirect="no"/>
+				<Control Id="GITEAPORTEdit3" Type="Edit" X="100" Y="111" Width="200" Height="15" Property="RUNASUSERNAME" ToolTip="Enter Username..." Text="[RUNASUSERNAME]" Indirect="no"/>
+				<Control Id="GITEAPORTEdit4" Type="Edit" X="100" Y="129" Width="200" Height="15" Property="SERVERDOMAIN" ToolTip="Enter Server Domain..." Text="[SERVERDOMAIN]" Indirect="no"/>
+				<Control Id="GITEAPORTEdit5" Type="Edit" X="100" Y="147" Width="200" Height="15" Property="GITEALISTENPORT" ToolTip="Enter Port..." Text="[GITEALISTENPORT]" Indirect="no"/>
+				<Control Id="GITEAPORTEdit6" Type="Edit" X="100" Y="165" Width="200" Height="15" Property="GITEABASEURL" ToolTip="Enter Base URL..." Text="[GITEABASEURL]" Indirect="no"/>
+				<Control Id="GITEAPORTEdit7" Type="Edit" X="100" Y="183" Width="200" Height="15" Property="LOGPATH" ToolTip="Enter Log Path..." Text="[LOGPATH]" Indirect="no"/>
 			</Dialog>
 			
 			<!-- Deprecated PMSConfigDlg -->

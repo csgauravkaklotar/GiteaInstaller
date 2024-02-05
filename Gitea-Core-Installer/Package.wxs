@@ -23,6 +23,18 @@
 				Value="0" />
 
 
+	  <Property Id="USELOCALSYSTEM"
+				Value="Yes" />
+
+	  <Property Id="DATABASENAME" 
+				Value="MSSQL" />
+
+	  <Property Id="POSTGRESQLSSL"
+				Value="Disable" />
+
+	  <Property Id="SQLITE3PATH"
+				Value="C:\Program Files\Gitea" />
+
 	  <!-- Custom Action Caling Sequence -->
 	  <InstallUISequence>
 		  <Show Dialog="CustomWelcomeDlg"

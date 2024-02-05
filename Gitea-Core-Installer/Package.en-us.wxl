@@ -48,7 +48,7 @@ This file contains the declaration of all the localizable strings.
 
 	<String Id="GiteaPortDlgDescription" Value="Please enter the port that the Gitea should be listen on." />
 	<String Id="GiteaPortDlgText" Value="The Gitea needs the port the service will listen on." />
-	<String Id="GiteaPortDlgTitle" Value="{\WixUI_Font_Title}Gitea Port" />
+	<String Id="GiteaPortDlgTitle" Value="Enter the General Settings for Gitea." />
 
 	<String Id="PMSConfigDlgDescription" Value="Please enter the Host name and InstallSVC port of Peregrine Management Suite" />
 	<String Id="PMSHostDlgText" Value="The Peregrine Metricbeat needs the Peregrine Managemenet Suite HostName" />
@@ -67,6 +67,9 @@ This file contains the declaration of all the localizable strings.
 	<String Id="MsiRMFilesInUseTitle" Value="" />
 	
 	<!--Service Account-->
-	<!--<String Id="ServiceAccountTitle" Value="Service Account" />-->
+	<String Id="ServiceAccountTitle" Value="{\WixUI_Font_Bigger}Service Account" />
+	
+	<!--Database Setup-->
+	<String Id="DatabaseSetupTitle" Value="Enter the Database Settings for Gitea." />
 	
 </WixLocalization>
