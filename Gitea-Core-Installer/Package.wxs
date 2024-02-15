@@ -11,29 +11,67 @@
 				  Value="*"/>
 	  <Property Id="GITEAPORT"
 				Value="49240"/>
-	  <Property Id="PMSHOST"
-				Value="localhost"/>
-	  <Property Id="INSTALLSVCPORT"
-				Value="48001"/>
-	  <Property Id="UD_DISPLAY_UI"
-				Value="1"/>
 	  <Property Id="IS_EXISTS"
 				Value="0" />
 	  <Property Id="UPGRADE_SILENT"
 				Value="0" />
 
-
+	  <!--Service Account System-->
 	  <Property Id="USELOCALSYSTEM"
 				Value="Yes" />
-
+	
+	  <!--Setup Database-->
 	  <Property Id="DATABASENAME" 
 				Value="MSSQL" />
+	 
+	  <!--MSSQL Database property-->
+	  <Property Id="MSSQLHOST"
+				Value="127.0.0.1:3306" />
+	  <Property Id="MSSQLUSERNAME"
+				Value="gitea" />
+	  <Property Id="MSSQLDATABASE"
+				Value="gitea" />
 
+	  <!--MYSQL Database property-->
+	  <Property Id="MYSQLHOST"
+				Value="127.0.0.1:1433" />
+	  <Property Id="MYSQLUSERNAME"
+				Value="gitea" />
+	  <Property Id="MYSQLDATABASE"
+				Value="gitea" />
+
+	  <!--POSTGRESQL Database property-->
+	  <Property Id="POSTGRESQLHOST"
+		  Value="127.0.0.1:5432" />
+	  <Property Id="POSTGRESQLUSERNAME"
+		  Value="gitea" />
+	  <Property Id="POSTGRESQLDATABASE"
+		  Value="gitea" />
+	  <Property Id="POSTGRESQLSCHEMA"
+		  Value="public" />
 	  <Property Id="POSTGRESQLSSL"
 				Value="Disable" />
 
+	  <!--SQLITE3 Database property-->
 	  <Property Id="SQLITE3PATH"
-				Value="C:\Program Files\Gitea" />
+				Value="C:\Program Files\Gitea v1.21.3\data\gitea.db" />
+	  
+	  
+	  <!--Gitea Ports property-->
+	  <Property Id="SETTILE"
+				Value="Peregrine Repository Management" />
+	  <Property Id="REPOROOTPATH"
+				Value="C:\Program Files\Gitea v1.21.3\data\lfs" />
+	  <Property Id="RUNASUSERNAME"
+				Value="Admin" />
+	  <Property Id="SERVERDOMAIN"
+				Value="localhost" />
+	  <Property Id="GITEALISTENPORT"
+				Value="3000" />
+	  <Property Id="GITEABASEURL"
+				Value="http://localhost:3000/" />
+	  <Property Id="LOGPATH"
+				Value="C:\Program Files\Gitea v1.21.3\log" />
 
 	  <!-- Custom Action Caling Sequence -->
 	  <InstallUISequence>
@@ -48,10 +86,9 @@
 				Condition="Installed AND (RESUME OR Preselected)" />
 	  </InstallUISequence>
 	  
-	  
     <Feature Id="Main">
       <ComponentGroupRef Id="GiteaComponents" />
     </Feature>
-
+	  
   </Package>
 </Wix>

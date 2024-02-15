@@ -1,10 +1,11 @@
 ﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:bal="http://wixtoolset.org/schemas/v4/wxs/bal">
   <Bundle Name="Gitea v1.21.3" Manufacturer="Gitea Installer, LLC" Version="$(Version)" UpgradeCode="308e5bd1-8075-453c-a8c3-e5da4bf24d4d">
-    <BootstrapperApplication>
-      <bal:WixStandardBootstrapperApplication LicenseUrl="https://www.example.com/license" Theme="hyperlinkLicense" />
-    </BootstrapperApplication>
+	  <BootstrapperApplication Id="WixStandardBootstrapperApplication.RtfLicense">
+		  <bal:WixStandardBootstrapperApplication LicenseUrl="https://www.example.com/license"
+												  Theme="rtfLargeLicense" />
+	  </BootstrapperApplication>
 
-    <Chain>
+	  <Chain>
 
 		<RollbackBoundary Id="RollbackGiteaInstaller"/>
 		<MsiPackage 
@@ -16,12 +17,10 @@
 			Visible="no"
 			Vital="yes"
 			Permanent="no"
+			bal:DisplayInternalUICondition='WixBundleAction = 6 OR WixBundleAction = 8'
 		>
 			<MsiProperty Name="INSTALLFOLDER" Value="[InstallFolder]"/>
 		</MsiPackage>
-		
-      <!-- TODO: Define the list of chained packages. -->
-      <!-- <MsiPackage SourceFile="path\to\your.msi" /> -->
     </Chain>
 
   </Bundle>

@@ -40,36 +40,69 @@ This file contains the declaration of all the localizable strings.
 
 	<String Id="DownloadUrl"
 			Value="Install .NET"/>
-
+	
+	
+	<!--Buttons-->
 	<String Id="BackButtonText" Value="&amp;Back" />
 	<String Id="CancelButtonText" Value="Cancel" />
 	<String Id="NextButtonText" Value="Next" />
+	
+	<!--Dialog Title-->
 	<String Id="DialogTitle" Value="[ProductName] Setup" />
-
+	
+	<!--Gitea Port-->
 	<String Id="GiteaPortDlgDescription" Value="Please enter the port that the Gitea should be listen on." />
 	<String Id="GiteaPortDlgText" Value="The Gitea needs the port the service will listen on." />
 	<String Id="GiteaPortDlgTitle" Value="Enter the General Settings for Gitea." />
 
-	<String Id="PMSConfigDlgDescription" Value="Please enter the Host name and InstallSVC port of Peregrine Management Suite" />
-	<String Id="PMSHostDlgText" Value="The Peregrine Metricbeat needs the Peregrine Managemenet Suite HostName" />
-	<String Id="PMSInstallSVCPortDlgText" Value="The Peregrine Metricbeat needs the Peregrine Installsvc Port" />
-
-	<String Id="PMSConfigDlgTitle" Value="{\WixUI_Font_Title}Peregrine Management Suite Configuration" />
-
-	<!--<String Id="VerifyReadyDlgInstallTitle" Value="" Overridable="yes"/>
-	<String Id="VerifyReadyDlgRemoveTitle" Value="" Overridable="yes"/>
-	<String Id="ProgressDlgTitleInstalling" Value="" Overridable="yes"/>
-	<String Id="MaintenanceTypeDlgTitle" Value="" Overridable="yes"/>
-	<String Id="MaintenanceTypeDlgDescription" Value="" Overridable="yes"/>
-	<String Id="FilesInUseDescription" Value=""/>
-	<String Id="FilesInUseTitle" Value="" />-->
-	<String Id="MsiRMFilesInUseDescription" Value=""/>
-	<String Id="MsiRMFilesInUseTitle" Value="" />
+	<!--ToolTips-->
+	<String Id="DomainToolTip" Value="Enter domain or machine name..." />
+	<String Id="UsernameToolTip" Value="Enter the user account name..." />
+	<String Id="PasswordToolTip" Value="Enter the password for the user..." />
+	<String Id="HostToolTip" Value="Enter Host..." />
+	<String Id="DatabaseToolTip" Value="Enter Database name..." />
+	<String Id="SchemaToolTip" Value="Enter Schema name..." />
+	<String Id="SSLToolTip" Value="Select SSL Option..." />
+	<String Id="PathToolTip" Value="Enter Path..." />
+	<String Id="SiteTitleToolTip" Value="Enter Site Title..." />
+	<String Id="RepoRootPathToolTip" Value="Enter Repository Root Path..." />
+	<String Id="RunAsUsernameToolTip" Value="Enter Username..." />
+	<String Id="ServerDomainToolTip" Value="Enter Server Domain..." />
+	<String Id="GiteaHTTPPortToolTip" Value="Enter HTTP Port..." />
+	<String Id="GiteaBaseURLToolTip" Value="Enter Base URL..." />
+	<String Id="LogPathToolTip" Value="Enter Log Path..." />
+	
+	<!--Lable Name-->
+	<String Id="Domain" Value="Domain/Machine:" />
+	<String Id="Username" Value="User Name:" />
+	<String Id="Password" Value="Password:" />
+	<String Id="Host" Value="Host:" />
+	<String Id="Database" Value="Database:" />
+	<String Id="Schema" Value="Schema:" />
+	<String Id="IsSSL" Value="Is SSL:" />
+	<String Id="Path" Value="Path:" />
+	<String Id="SiteTitle" Value="Site Title:" />
+	<String Id="RepoRootPath" Value="Repository Root Path:" />
+	<String Id="RunAsUsername" Value="Run As Username:" />
+	<String Id="ServerDomain" Value="Server Domain:" />
+	<String Id="GiteaHTTPPort" Value="Gitea HTTP Listen Port:" />
+	<String Id="GiteaBaseURL" Value="Gitea Base URL:" />
+	<String Id="LogPath" Value="Log Path:" />
+	
+	<!--DropDown Items Name-->
+	<String Id="MSSQL" Value="MSSQL" />
+	<String Id="MYSQL" Value="MYSQL" />
+	<String Id="POSTGRESQL" Value="POSTGRE SQL" />
+	<String Id="SQLITE3" Value="SQLITE3" />
+	<String Id="Disable" Value="Disable" />
+	<String Id="Require" Value="Require" />
+	<String Id="VeryFull" Value="Very Full" />
 	
 	<!--Service Account-->
 	<String Id="ServiceAccountTitle" Value="{\WixUI_Font_Bigger}Service Account" />
+	<String Id="UseLocalSystemAccount" Value="Use the built in Local System account" />
+	<String Id="UseDomainAccount" Value="Use a domain user account" />
 	
 	<!--Database Setup-->
 	<String Id="DatabaseSetupTitle" Value="Enter the Database Settings for Gitea." />
-	
 </WixLocalization>
